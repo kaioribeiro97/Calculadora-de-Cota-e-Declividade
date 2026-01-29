@@ -46,9 +46,9 @@ with c1:
 
 with c2:
     st.info("📊 Parâmetros de Cálculo")
-    st.text_input("Diferença de Cota (m)", value=f"{st.session_state.res['diff_cota']:.5f}", disabled=True)
-    st.text_input("Declividade (m/m)", value=f"{st.session_state.res['declividade']:.5f}", disabled=True)
-    st.text_input("Desnível Parcial (m)", value=f"{st.session_state.res['desnivel_parcial']:.5f}", disabled=True)
+    st.text_input("Diferença de Cota (m)", value=f"{st.session_state.res['diff_cota']:.5f}", disabled=True, key="view_diff")
+    st.text_input("Declividade (m/m)", value=f"{st.session_state.res['declividade']:.5f}", disabled=True, key="view_decliv")
+    st.text_input("Desnível Parcial (m)", value=f"{st.session_state.res['desnivel_parcial']:.5f}", disabled=True, key="view_desnivel")
 
 st.divider()
 
@@ -75,6 +75,12 @@ if st.button("Calcular e Atualizar Campos", type="primary", use_container_width=
                 'p_pvp': p_proj,
                 'calculado': True
             }
+            
+            st.session_state['res_cf1'] = cf1
+            st.session_state['res_cf2'] = cf2
+            st.session_state['res_cf_pvp'] = cf_proj
+            st.session_state['res_p_pvp'] = p_proj
+            
             st.rerun()
 
     except Exception as e:

@@ -19,14 +19,14 @@ col1, col2, col3 = st.columns(3)
 with col1:
     st.info("📍 PVE 1")
     pve1_ct = st.number_input("Cota de Tampa (CT)", value=0.0, format="%.5f", key="ct1")
-    pve1_ch = st.number_input("Cota de Chegada (CH)", value=0.0, format="%.5f", key="ch1")
+    pve1_ch = st.number_input("Chaminé (CH)", value=0.0, format="%.5f", key="ch1")
     pve1_p = st.number_input("Profundidade (P)", value=0.0, format="%.5f", key="p1")
     st.number_input("Resultado: Cota de Fundo (CF)", value=st.session_state.res['cf_pve1'], format="%.5f", disabled=True, key="res_cf1")
 
 with col2:
     st.info("📍 PVE 2")
     pve2_ct = st.number_input("Cota de Tampa (CT)", value=0.0, format="%.5f", key="ct2")
-    pve2_ch = st.number_input("Cota de Chegada (CH)", value=0.0, format="%.5f", key="ch2")
+    pve2_ch = st.number_input("Chaminé (CH)", value=0.0, format="%.5f", key="ch2")
     pve2_p = st.number_input("Profundidade (P)", value=0.0, format="%.5f", key="p2")
     st.number_input("Resultado: Cota de Fundo (CF)", value=st.session_state.res['cf_pve2'], format="%.5f", disabled=True, key="res_cf2")
 

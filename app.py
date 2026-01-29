@@ -57,21 +57,21 @@ if st.button("Executar Cálculos", type="primary", use_container_width=True):
         
         st.markdown("**Dados dos PVEs**")
         res1, res2, res3 = st.columns(3)
-        res1.metric("CF PVE 1", f"{cf_pve1:.3f} m")
-        res2.metric("CF PVE 2", f"{cf_pve2:.3f} m")
-        res3.metric("Diferença de Cota", f"{diff_cota:.3f} m")
+        res1.metric("CF PVE 1", f"{cf_pve1:.5f} m")
+        res2.metric("CF PVE 2", f"{cf_pve2:.5f} m")
+        res3.metric("Diferença de Cota", f"{diff_cota:.5f} m")
 
         st.divider()
         st.markdown("**Declividade e Desníveis**")
         res4, res5, res6 = st.columns(3)
         res4.metric("Declividade", f"{declividade:.5f} m/m")
-        res5.metric("Desnível Parcial", f"{desnivel_parcial:.3f} m")
+        res5.metric("Desnível Parcial", f"{desnivel_parcial:.5f} m")
         
         st.divider()
         st.markdown("**Resultado no PV de Projeto**")
         res7, res8 = st.columns(2)
-        res7.metric("CF PV de Projeto", f"{cf_pvp:.3f} m")
-        res8.metric("P PV de Projeto (Profundidade)", f"{p_pvp:.3f} m")
+        res7.metric("CF PV de Projeto", f"{cf_pvp:.5f} m")
+        res8.metric("P PV de Projeto (Profundidade)", f"{p_pvp:.5f} m")
 
         if p_pvp < 0:
             st.warning("Atenção: A profundidade do PV de Projeto calculada é negativa. Verifique as cotas de tampa.")

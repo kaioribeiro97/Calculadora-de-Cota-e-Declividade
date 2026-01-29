@@ -1,82 +1,84 @@
 import streamlit as st
 
-st.set_page_config(page_title="Calculadora de Cotas PVE/PV de Projeto", layout="centered")
+st.set_page_config(page_title="Calculadora de Cotas PVE/PV de Projeto", layout="wide")
 
-st.title("📏 Calculadora de Cotas e Declividade")
-st.markdown("Cálculo de Cota de Fundo ($CF$) e Profundidade ($P$) para PVEs e PVs de Projeto.")
+if 'res' not in st.session_state:
+    st.session_state.res = {
+        'cf_pve1': 0.0, 'cf_pve2': 0.0, 'diff_cota': 0.0,
+        'declividade': 0.0, 'desnivel_parcial': 0.0,
+        'cf_pvp': 0.0, 'p_pvp': 0.0, 'calculado': False
+    }
+
+st.title("📏 Calculadora de Cotas Integrada")
+st.markdown("Insira os dados técnicos para atualizar os campos de resultado.")
 
 st.divider()
 
-st.subheader("📝 Dados de Entrada")
-
-col1, col2 = st.columns(2)
+col1, col2, col3 = st.columns(3)
 
 with col1:
     st.info("📍 PVE 1")
-    pve1_ct = st.number_input("PVE 1: Cota de Tampa (CT)", value=0.0, format="%.5f", key="ct1")
-    pve1_ch = st.number_input("PVE 1: Chaminé (CH)", value=0.0, format="%.5f", key="ch1")
-    pve1_p = st.number_input("PVE 1: Profundidade (P)", value=0.0, format="%.5f", key="p1")
+    pve1_ct = st.number_input("Cota de Tampa (CT)", value=0.0, format="%.5f", key="ct1")
+    pve1_ch = st.number_input("Cota de Chegada (CH)", value=0.0, format="%.5f", key="ch1")
+    pve1_p = st.number_input("Profundidade (P)", value=0.0, format="%.5f", key="p1")
+    st.number_input("Resultado: Cota de Fundo (CF)", value=st.session_state.res['cf_pve1'], format="%.5f", disabled=True, key="res_cf1")
 
 with col2:
     st.info("📍 PVE 2")
-    pve2_ct = st.number_input("PVE 2: Cota de Tampa (CT)", value=0.0, format="%.5f", key="ct2")
-    pve2_ch = st.number_input("PVE 2: Chaminé (CH)", value=0.0, format="%.5f", key="ch2")
-    pve2_p = st.number_input("PVE 2: Profundidade (P)", value=0.0, format="%.5f", key="p2")
-
-st.divider()
-
-col3, col4 = st.columns(2)
+    pve2_ct = st.number_input("Cota de Tampa (CT)", value=0.0, format="%.5f", key="ct2")
+    pve2_ch = st.number_input("Cota de Chegada (CH)", value=0.0, format="%.5f", key="ch2")
+    pve2_p = st.number_input("Profundidade (P)", value=0.0, format="%.5f", key="p2")
+    st.number_input("Resultado: Cota de Fundo (CF)", value=st.session_state.res['cf_pve2'], format="%.5f", disabled=True, key="res_cf2")
 
 with col3:
     st.info("📐 PV de Projeto")
-    pvp_ct = st.number_input("PV de Projeto: Cota de Tampa (CT)", value=0.0, format="%.5f", key="ct_pvp")
-
-with col4:
-    st.info("🛣️ Distâncias")
-    dist_pve1_pve2 = st.number_input("Distância PVE1 ↔ PVE2", value=0.0, format="%.2f", key="d12")
-    dist_pve1_pvp = st.number_input("Distância PVE1 ↔ PV de Projeto", value=0.0, format="%.2f", key="d1p")
+    pvp_ct = st.number_input("Cota de Tampa (CT)", value=0.0, format="%.5f", key="ct_pvp")
+    st.number_input("Resultado: Cota de Fundo (CF)", value=st.session_state.res['cf_pvp'], format="%.5f", disabled=True, key="res_cf_pvp")
+    st.number_input("Resultado: Profundidade (P)", value=st.session_state.res['p_pvp'], format="%.5f", disabled=True, key="res_p_pvp")
 
 st.divider()
 
-if st.button("Executar Cálculos", type="primary", use_container_width=True):
+c1, c2 = st.columns(2)
+with c1:
+    st.info("🛣️ Distâncias")
+    dist_pve1_pve2 = st.number_input("Distância PVE1 ↔ PVE2", value=0.0, format="%.5f", key="d12")
+    dist_pve1_pvp = st.number_input("Distância PVE1 ↔ PV de Projeto", value=0.0, format="%.5f", key="d1p")
+
+with c2:
+    st.info("📊 Parâmetros de Cálculo")
+    st.text_input("Diferença de Cota (m)", value=f"{st.session_state.res['diff_cota']:.5f}", disabled=True)
+    st.text_input("Declividade (m/m)", value=f"{st.session_state.res['declividade']:.5f}", disabled=True)
+    st.text_input("Desnível Parcial (m)", value=f"{st.session_state.res['desnivel_parcial']:.5f}", disabled=True)
+
+st.divider()
+
+if st.button("Calcular e Atualizar Campos", type="primary", use_container_width=True):
     try:
-        cf_pve1 = (pve1_ct - pve1_ch) - (pve1_p - pve1_ch)
-        cf_pve2 = (pve2_ct - pve2_ch) - (pve2_p - pve2_ch)
-        diff_cota = cf_pve1 - cf_pve2
-        
         if dist_pve1_pve2 == 0:
             st.error("A distância entre PVE1 e PVE2 não pode ser zero.")
-            st.stop()
-        
-        declividade = diff_cota / dist_pve1_pve2
-        desnivel_parcial = declividade * dist_pve1_pvp
-        cf_pvp = cf_pve1 - desnivel_parcial
-        p_pvp = pvp_ct - cf_pvp
+        else:
+            cf1 = (pve1_ct - pve1_ch) - (pve1_p - pve1_ch)
+            cf2 = (pve2_ct - pve2_ch) - (pve2_p - pve2_ch)
+            diff = cf1 - cf2
+            decliv = diff / dist_pve1_pve2
+            desnivel = decliv * dist_pve1_pvp
+            cf_proj = cf1 - desnivel
+            p_proj = pvp_ct - cf_proj
 
-        st.subheader("📊 Resultados Finais")
-        
-        st.markdown("**Dados dos PVEs**")
-        res1, res2, res3 = st.columns(3)
-        res1.metric("CF PVE 1", f"{cf_pve1:.5f} m")
-        res2.metric("CF PVE 2", f"{cf_pve2:.5f} m")
-        res3.metric("Diferença de Cota", f"{diff_cota:.5f} m")
-
-        st.divider()
-        st.markdown("**Declividade e Desníveis**")
-        res4, res5, res6 = st.columns(3)
-        res4.metric("Declividade", f"{declividade:.5f} m/m")
-        res5.metric("Desnível Parcial", f"{desnivel_parcial:.5f} m")
-        
-        st.divider()
-        st.markdown("**Resultado no PV de Projeto**")
-        res7, res8 = st.columns(2)
-        res7.metric("CF PV de Projeto", f"{cf_pvp:.5f} m")
-        res8.metric("P PV de Projeto (Profundidade)", f"{p_pvp:.5f} m")
-
-        if p_pvp < 0:
-            st.warning("Atenção: A profundidade do PV de Projeto calculada é negativa. Verifique as cotas de tampa.")
+            st.session_state.res = {
+                'cf_pve1': cf1,
+                'cf_pve2': cf2,
+                'diff_cota': diff,
+                'declividade': decliv,
+                'desnivel_parcial': desnivel,
+                'cf_pvp': cf_proj,
+                'p_pvp': p_proj,
+                'calculado': True
+            }
+            st.rerun()
 
     except Exception as e:
-        st.error(f"Ocorreu um erro matemático: {e}")
-else:
-    st.info("Clique no botão acima para processar os dados inseridos.")
+        st.error(f"Erro: {e}")
+
+if st.session_state.res['calculado'] and st.session_state.res['p_pvp'] < 0:
+    st.warning("Atenção: A profundidade do PV de Projeto calculada é negativa.")

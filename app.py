@@ -13,15 +13,15 @@ col1, col2 = st.columns(2)
 
 with col1:
     st.info("📍 PVE 1")
-    pve1_ct = st.number_input("PVE 1: Cota de Tampa (CT)", value=0.0, format="%.3f", key="ct1")
-    pve1_ch = st.number_input("PVE 1: Chaminé (CH)", value=0.0, format="%.3f", key="ch1")
-    pve1_p = st.number_input("PVE 1: Profundidade (P)", value=0.0, format="%.3f", key="p1")
+    pve1_ct = st.number_input("PVE 1: Cota de Tampa (CT)", value=0.0, format="%.5f", key="ct1")
+    pve1_ch = st.number_input("PVE 1: Chaminé (CH)", value=0.0, format="%.5f", key="ch1")
+    pve1_p = st.number_input("PVE 1: Profundidade (P)", value=0.0, format="%.5f", key="p1")
 
 with col2:
     st.info("📍 PVE 2")
-    pve2_ct = st.number_input("PVE 2: Cota de Tampa (CT)", value=0.0, format="%.3f", key="ct2")
-    pve2_ch = st.number_input("PVE 2: Chaminé (CH)", value=0.0, format="%.3f", key="ch2")
-    pve2_p = st.number_input("PVE 2: Profundidade (P)", value=0.0, format="%.3f", key="p2")
+    pve2_ct = st.number_input("PVE 2: Cota de Tampa (CT)", value=0.0, format="%.5f", key="ct2")
+    pve2_ch = st.number_input("PVE 2: Chaminé (CH)", value=0.0, format="%.5f", key="ch2")
+    pve2_p = st.number_input("PVE 2: Profundidade (P)", value=0.0, format="%.5f", key="p2")
 
 st.divider()
 
@@ -29,7 +29,7 @@ col3, col4 = st.columns(2)
 
 with col3:
     st.info("📐 PV de Projeto")
-    pvp_ct = st.number_input("PV de Projeto: Cota de Tampa (CT)", value=0.0, format="%.3f", key="ct_pvp")
+    pvp_ct = st.number_input("PV de Projeto: Cota de Tampa (CT)", value=0.0, format="%.5f", key="ct_pvp")
 
 with col4:
     st.info("🛣️ Distâncias")

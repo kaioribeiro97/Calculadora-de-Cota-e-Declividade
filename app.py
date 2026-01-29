@@ -21,20 +21,20 @@ with col1:
     pve1_ct = st.number_input("Cota de Tampa (CT)", value=0.0, format="%.5f", key="ct1")
     pve1_ch = st.number_input("Chaminé (CH)", value=0.0, format="%.5f", key="ch1")
     pve1_p = st.number_input("Profundidade (P)", value=0.0, format="%.5f", key="p1")
-    st.number_input("Resultado: Cota de Fundo (CF)", value=st.session_state.res['cf_pve1'], format="%.5f", disabled=True, key="res_cf1")
+    st.number_input("Resultado: Cota de Fundo (CF)", value=st.session_state.res['cf_pve1'], format="%.5f", disabled=True, key="disp_cf1")
 
 with col2:
     st.info("📍 PVE 2")
     pve2_ct = st.number_input("Cota de Tampa (CT)", value=0.0, format="%.5f", key="ct2")
     pve2_ch = st.number_input("Chaminé (CH)", value=0.0, format="%.5f", key="ch2")
     pve2_p = st.number_input("Profundidade (P)", value=0.0, format="%.5f", key="p2")
-    st.number_input("Resultado: Cota de Fundo (CF)", value=st.session_state.res['cf_pve2'], format="%.5f", disabled=True, key="res_cf2")
+    st.number_input("Resultado: Cota de Fundo (CF)", value=st.session_state.res['cf_pve2'], format="%.5f", disabled=True, key="disp_cf2")
 
 with col3:
     st.info("📐 PV de Projeto")
     pvp_ct = st.number_input("Cota de Tampa (CT)", value=0.0, format="%.5f", key="ct_pvp")
-    st.number_input("Resultado: Cota de Fundo (CF)", value=st.session_state.res['cf_pvp'], format="%.5f", disabled=True, key="res_cf_pvp")
-    st.number_input("Resultado: Profundidade (P)", value=st.session_state.res['p_pvp'], format="%.5f", disabled=True, key="res_p_pvp")
+    st.number_input("Resultado: Cota de Fundo (CF)", value=st.session_state.res['cf_pvp'], format="%.5f", disabled=True, key="disp_cf_pvp")
+    st.number_input("Resultado: Profundidade (P)", value=st.session_state.res['p_pvp'], format="%.5f", disabled=True, key="disp_p_pvp")
 
 st.divider()
 
@@ -75,11 +75,6 @@ if st.button("Calcular e Atualizar Campos", type="primary", use_container_width=
                 'p_pvp': p_proj,
                 'calculado': True
             }
-            
-            st.session_state['res_cf1'] = cf1
-            st.session_state['res_cf2'] = cf2
-            st.session_state['res_cf_pvp'] = cf_proj
-            st.session_state['res_p_pvp'] = p_proj
             
             st.rerun()
 
